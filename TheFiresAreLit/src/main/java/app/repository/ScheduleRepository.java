@@ -1,10 +1,10 @@
 package app.repository;
 
-import app.model.Event;
+import app.model.Schedule;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EventRepository extends CrudRepository<Event, Integer> {
+public interface ScheduleRepository extends CrudRepository<Schedule, Integer> {
 
 }

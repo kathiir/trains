@@ -1,12 +1,10 @@
 package app.repository;
 
-import app.dto.Rail;
+import app.model.Rail;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface RailRepository {
-    List<Rail> getAll();
-//    Rail getPreviousRail(Rail rail);
-    void addRail(Rail rail);
+@Repository
+public interface RailRepository extends CrudRepository<Rail, Integer> {
 
 }

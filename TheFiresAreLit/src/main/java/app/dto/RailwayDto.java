@@ -2,7 +2,6 @@ package app.dto;
 
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,9 +9,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Railway {
+public class RailwayDto {
+    private Integer id;
+
     @Builder.Default
-    private List<Rail> rails = new LinkedList<>();
+    private List<RailDto> railDtos = new LinkedList<>();
     @Builder.Default
-    private List<Station> stations = new LinkedList<>();
+    private List<RailDto> stationDtos = new LinkedList<>();
 }

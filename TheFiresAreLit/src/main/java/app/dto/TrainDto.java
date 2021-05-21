@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Station extends Rail {
+public class TrainDto {
+    private Integer id;
+
     private String name;
+    private RouteDto route;
+    private RailDto rail;
 }

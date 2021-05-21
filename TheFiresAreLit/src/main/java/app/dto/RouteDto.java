@@ -14,10 +14,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Route {
-//    private Train train;
+public class RouteDto {
+    private Integer schedule_id;
+    private Integer log_id;
+
     @Builder.Default
-    private List<Triple<Station, Integer, Integer>> schedule = new ArrayList<>();
+    private List<RoutePartDto> schedule = new ArrayList<>();
     @Builder.Default
-    private List<Triple<Station, Integer, Integer>> log = new ArrayList<>();
+    private List<RoutePartDto> log = new ArrayList<>();
 }

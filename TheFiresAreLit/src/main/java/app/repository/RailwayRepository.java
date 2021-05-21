@@ -1,11 +1,10 @@
 package app.repository;
 
-import app.dto.Railway;
+import app.model.Railway;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RailwayRepository {
-    Railway getRailway();
-
-//    Station getStationByRailway(Railway railway);
-    void setRailway(Railway railway);
+@Repository
+public interface RailwayRepository extends CrudRepository<Railway, Integer> {
 
 }

@@ -1,18 +1,10 @@
 package app.repository;
 
-import app.dto.Rail;
-import app.dto.Train;
+import app.model.Train;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface TrainRepository extends CrudRepository<Train, Integer> {
 
-public interface TrainRepository {
-    List<Train> getAll();
-
-    Train getByName(String name);
-
-    Train getTrainByRail(Rail rail);
-
-    void addTrain(Train train);
-
-//    Rail getRailByTrain(Train train);
 }
