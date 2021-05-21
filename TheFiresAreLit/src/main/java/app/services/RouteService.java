@@ -108,75 +108,75 @@ public class RouteService {
             var schedule = trainDto.getRoute().getSchedule();
             var log = trainDto.getRoute().getLog();
 
-            if (!schedule.isEmpty() && schedule.get(0).getDepartment() <= currentTime) {
-                if (schedule.size() == log.size()) {
-                    return;
-                }
-                if (!eventRepository.getByRail(train.getRailDto()).isEmpty()) {
-                    if (eventRepository.getByRail(train.getRailDto()).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
-                        return;
-
-                    }
-                }
-                if (!eventRepository.getByTrain(train).isEmpty()) {
-                    if (eventRepository.getByTrain(train).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
-                        return;
-
-                    }
-                }
-                if (stationRepository.isStation(railwayService.getNextRail(train.getRailDto()))) {
-                    log.add(Triple.of(((StationDto) railwayService.getNextRail(train.getRailDto())),
-                            currentTime, currentTime + 2 + random.nextInt(4)));
-
-                }
-                if (stationRepository.isStation(train.getRailDto())) {
-                    if (currentTime >= log.get(log.size() - 1).getDepartment()) {
-                        log.set(log.size() - 1, Triple.of(log.get(log.size() - 1).getStationDto(),
-                                log.get(log.size() - 1).getArrival(), currentTime));
-                        train.setRailDto(railwayService.getNextRail(train.getRailDto()));
-                    }
-                } else {
-                    train.setRailDto(railwayService.getNextRail(train.getRailDto()));
-                }
-            }
+//            if (!schedule.isEmpty() && schedule.get(0).getDepartment() <= currentTime) {
+//                if (schedule.size() == log.size()) {
+//                    return;
+//                }
+//                if (!eventRepository.getByRail(train.getRailDto()).isEmpty()) {
+//                    if (eventRepository.getByRail(train.getRailDto()).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
+//                        return;
+//
+//                    }
+//                }
+//                if (!eventRepository.getByTrain(train).isEmpty()) {
+//                    if (eventRepository.getByTrain(train).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
+//                        return;
+//
+//                    }
+//                }
+//                if (stationRepository.isStation(railwayService.getNextRail(train.getRailDto()))) {
+//                    log.add(Triple.of(((StationDto) railwayService.getNextRail(train.getRailDto())),
+//                            currentTime, currentTime + 2 + random.nextInt(4)));
+//
+//                }
+//                if (stationRepository.isStation(train.getRailDto())) {
+//                    if (currentTime >= log.get(log.size() - 1).getDepartment()) {
+//                        log.set(log.size() - 1, Triple.of(log.get(log.size() - 1).getStationDto(),
+//                                log.get(log.size() - 1).getArrival(), currentTime));
+//                        train.setRailDto(railwayService.getNextRail(train.getRailDto()));
+//                    }
+//                } else {
+//                    train.setRailDto(railwayService.getNextRail(train.getRailDto()));
+//                }
+//            }
 
         }
-
-        trainRepository.getAll().forEach(train -> {
-            var schedule = train.getRouteDto().getSchedule();
-            var log = train.getRouteDto().getLog();
-            if (!schedule.isEmpty() && schedule.get(0).getDepartment() <= currentTime) {
-                if (schedule.size() == log.size()) {
-                    return;
-                }
-                if (!eventRepository.getByRail(train.getRailDto()).isEmpty()) {
-                    if (eventRepository.getByRail(train.getRailDto()).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
-                        return;
-
-                    }
-                }
-                if (!eventRepository.getByTrain(train).isEmpty()) {
-                    if (eventRepository.getByTrain(train).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
-                        return;
-
-                    }
-                }
-                if (stationRepository.isStation(railwayService.getNextRail(train.getRailDto()))) {
-                    log.add(Triple.of(((StationDto) railwayService.getNextRail(train.getRailDto())),
-                            currentTime, currentTime + 2 + random.nextInt(4)));
-
-                }
-                if (stationRepository.isStation(train.getRailDto())) {
-                    if (currentTime >= log.get(log.size() - 1).getDepartment()) {
-                        log.set(log.size() - 1, Triple.of(log.get(log.size() - 1).getStationDto(),
-                                log.get(log.size() - 1).getArrival(), currentTime));
-                        train.setRailDto(railwayService.getNextRail(train.getRailDto()));
-                    }
-                } else {
-                    train.setRailDto(railwayService.getNextRail(train.getRailDto()));
-                }
-            }
-        });
+//
+//        trainRepository.getAll().forEach(train -> {
+//            var schedule = train.getRouteDto().getSchedule();
+//            var log = train.getRouteDto().getLog();
+//            if (!schedule.isEmpty() && schedule.get(0).getDepartment() <= currentTime) {
+//                if (schedule.size() == log.size()) {
+//                    return;
+//                }
+//                if (!eventRepository.getByRail(train.getRailDto()).isEmpty()) {
+//                    if (eventRepository.getByRail(train.getRailDto()).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
+//                        return;
+//
+//                    }
+//                }
+//                if (!eventRepository.getByTrain(train).isEmpty()) {
+//                    if (eventRepository.getByTrain(train).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
+//                        return;
+//
+//                    }
+//                }
+//                if (stationRepository.isStation(railwayService.getNextRail(train.getRailDto()))) {
+//                    log.add(Triple.of(((StationDto) railwayService.getNextRail(train.getRailDto())),
+//                            currentTime, currentTime + 2 + random.nextInt(4)));
+//
+//                }
+//                if (stationRepository.isStation(train.getRailDto())) {
+//                    if (currentTime >= log.get(log.size() - 1).getDepartment()) {
+//                        log.set(log.size() - 1, Triple.of(log.get(log.size() - 1).getStationDto(),
+//                                log.get(log.size() - 1).getArrival(), currentTime));
+//                        train.setRailDto(railwayService.getNextRail(train.getRailDto()));
+//                    }
+//                } else {
+//                    train.setRailDto(railwayService.getNextRail(train.getRailDto()));
+//                }
+//            }
+//        });
 
         currentTime++;
     }
