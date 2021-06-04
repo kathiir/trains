@@ -7,7 +7,6 @@ import app.dto.TrainDto;
 import app.mapper.Mapper;
 import app.model.Log;
 import app.model.Schedule;
-import app.model.Train;
 import app.repository.EventRepository;
 import app.repository.LogRepository;
 import app.repository.RailRepository;
@@ -24,7 +23,7 @@ public class RouteService {
     private final LogRepository logRepository;
     private final ScheduleRepository scheduleRepository;
     private final TrainRepository trainRepository;
-    private final RailRepository stationRepository;
+    private final RailRepository railRepository;
     private final EventRepository eventRepository;
 
     private final RailwayService railwayService;
@@ -37,12 +36,12 @@ public class RouteService {
 
     @Autowired
     public RouteService(LogRepository logRepository, ScheduleRepository scheduleRepository, TrainRepository trainRepository,
-                        RailRepository stationRepository, EventRepository eventRepository,
+                        RailRepository railRepository, EventRepository eventRepository,
                         RailwayService railwayService, EventService eventService, Mapper mapper) {
         this.logRepository = logRepository;
         this.scheduleRepository = scheduleRepository;
         this.trainRepository = trainRepository;
-        this.stationRepository = stationRepository;
+        this.railRepository = railRepository;
         this.eventRepository = eventRepository;
         this.railwayService = railwayService;
         this.eventService = eventService;
@@ -96,8 +95,12 @@ public class RouteService {
         var train = mapper.toTrain(trainDto);
         train.setSchedule(schedule);
         train.setLog(log);
+        train.setRail(schedule.getSchedule().get(0).getStation());
 
         trainRepository.save(train);
+
+        System.out.println("KKK");
+        update();
     }
 
     public void update() {
@@ -105,13 +108,19 @@ public class RouteService {
         var train = trainRepository.findAll().iterator().next();
         if (train != null) {
             var trainDto = mapper.toTrainDto(train);
+            System.out.println(trainDto.getRail());
             var schedule = trainDto.getRoute().getSchedule();
             var log = trainDto.getRoute().getLog();
 
-//            if (!schedule.isEmpty() && schedule.get(0).getDepartment() <= currentTime) {
-//                if (schedule.size() == log.size()) {
-//                    return;
-//                }
+
+
+            System.out.println(trainDto.getRail().getNext().getId());
+
+            if (!schedule.isEmpty() && schedule.get(0).getDepartment() <= currentTime) {
+                if (schedule.size() == log.size()) {
+                    return;
+                }
+
 //                if (!eventRepository.getByRail(train.getRailDto()).isEmpty()) {
 //                    if (eventRepository.getByRail(train.getRailDto()).stream().anyMatch(event -> event.getEnding() >= currentTime)) {
 //                        return;
@@ -124,21 +133,23 @@ public class RouteService {
 //
 //                    }
 //                }
-//                if (stationRepository.isStation(railwayService.getNextRail(train.getRailDto()))) {
+
+                if (trainDto.getRail().getNext().isStation()) {
 //                    log.add(Triple.of(((StationDto) railwayService.getNextRail(train.getRailDto())),
 //                            currentTime, currentTime + 2 + random.nextInt(4)));
-//
-//                }
-//                if (stationRepository.isStation(train.getRailDto())) {
+
+                }
+
+                if (trainDto.getRail().isStation()) {
 //                    if (currentTime >= log.get(log.size() - 1).getDepartment()) {
 //                        log.set(log.size() - 1, Triple.of(log.get(log.size() - 1).getStationDto(),
 //                                log.get(log.size() - 1).getArrival(), currentTime));
 //                        train.setRailDto(railwayService.getNextRail(train.getRailDto()));
 //                    }
-//                } else {
+                } else {
 //                    train.setRailDto(railwayService.getNextRail(train.getRailDto()));
-//                }
-//            }
+                }
+            }
 
         }
 //
