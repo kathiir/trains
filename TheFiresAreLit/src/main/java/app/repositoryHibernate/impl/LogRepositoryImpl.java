@@ -1,7 +1,8 @@
 package app.repositoryHibernate.impl;
 
-import app.model.Rail;
-import app.repositoryHibernate.RandomItemRepository;
+import app.model.Log;
+import app.repositoryHibernate.BaseRepository;
+import app.repositoryHibernate.LogRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,30 +14,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RailRepository implements RandomItemRepository<Rail> {
+public class LogRepositoryImpl implements LogRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public RailRepository(SessionFactory sessionFactory) {
+    public LogRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Rail> findAll() {
+    public List<Log> findAll() {
         Session session = sessionFactory.openSession();
-        Query<Rail> query = session.createQuery("from Rail", Rail.class);
-        List<Rail> items = query.getResultList();
+        Query<Log> query = session.createQuery("from Log", Log.class);
+        List<Log> items = query.getResultList();
         session.close();
         return items;
     }
 
     @Override
-    public void save(Rail item) {
+    public void save(Log item) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.saveOrUpdate(item);
+        session.save(item);
         transaction.commit();
         session.close();
     }
@@ -44,11 +45,11 @@ public class RailRepository implements RandomItemRepository<Rail> {
     @Override
     public void deleteAll() {
         Session session = sessionFactory.openSession();
-        Query<Rail> query = session.createQuery("from Rail", Rail.class);
-        List<Rail> items = query.getResultList();
+        Query<Log> query = session.createQuery("from Log", Log.class);
+        List<Log> items = query.getResultList();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        for (Rail item : items) {
+        for (Log item : items) {
             session.delete(item);
         }
         transaction.commit();
@@ -58,25 +59,16 @@ public class RailRepository implements RandomItemRepository<Rail> {
     @Override
     public long count() {
         Session session = sessionFactory.openSession();
-        Query<Rail> query = session.createQuery("from Rail", Rail.class);
+        Query<Log> query = session.createQuery("from Log", Log.class);
         long size = query.getResultList().size();
         session.close();
         return size;
     }
 
     @Override
-    public Optional<Rail> findById(long id) {
+    public Optional<Log> findById(long id) {
         Session session = sessionFactory.openSession();
-        Rail item = session.get(Rail.class, id);
-        session.close();
-        return Optional.of(item);
-    }
-
-    @Override
-    public Optional<Rail> getRandomItem() {
-        Session session = sessionFactory.openSession();
-        Query<Rail> query = session.createQuery("from Rail order by rand()", Rail.class).setMaxResults(1);
-        Rail item = query.getSingleResult();
+        Log item = session.get(Log.class, id);
         session.close();
         return Optional.of(item);
     }

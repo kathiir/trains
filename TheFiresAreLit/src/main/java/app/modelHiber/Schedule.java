@@ -1,4 +1,4 @@
-package app.model;
+package app.modelHiber;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,15 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-
 @Entity
 @Data
 @NoArgsConstructor
-public class Log {
+public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "log", cascade = CascadeType.ALL)
-    private List<LogPart> log;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule", cascade = CascadeType.ALL)
+    private List<SchedulePart> schedule;
+
 }

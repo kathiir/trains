@@ -3,7 +3,8 @@ package app.servicesHibernate;
 import app.dto.RailDto;
 import app.mapper.Mapper;
 import app.model.Rail;
-import app.repositoryHibernate.impl.RailRepository;
+import app.repositoryHibernate.RailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +15,7 @@ public class RailService {
     private final Mapper mapper;
     private final RailRepository railRepository;
 
+    @Autowired
     public RailService(Mapper mapper, RailRepository railRepository) {
         this.mapper = mapper;
         this.railRepository = railRepository;

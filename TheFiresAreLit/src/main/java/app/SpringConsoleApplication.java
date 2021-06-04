@@ -1,11 +1,10 @@
 package app;
 
 import app.config.HiberConfig;
-import app.config.SpringDataConfig;
 import app.dto.RouteDto;
 import app.mapper.Mapper;
 //import app.repository.EventRepository;
-import app.repositoryHibernate.impl.EventRepository;
+import app.repositoryHibernate.EventRepository;
 import app.servicesHibernate.RailwayService;
 //import app.services.EventService;
 import app.servicesHibernate.RouteService;

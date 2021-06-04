@@ -4,8 +4,8 @@ import app.dto.RailDto;
 import app.dto.RailwayDto;
 import app.mapper.Mapper;
 import app.model.Rail;
-import app.repositoryHibernate.impl.RailRepository;
-import app.repositoryHibernate.impl.RailwayRepository;
+import app.repositoryHibernate.RailRepository;
+import app.repositoryHibernate.RailwayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

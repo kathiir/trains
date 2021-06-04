@@ -1,7 +1,7 @@
 package app.repositoryHibernate.impl;
 
-import app.model.Event;
-import app.repositoryHibernate.BaseRepository;
+import app.model.Rail;
+import app.repositoryHibernate.RailRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,30 +13,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class EventRepository implements BaseRepository<Event> {
+public class RailRepositoryImpl implements RailRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public EventRepository(SessionFactory sessionFactory) {
+    public RailRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Event> findAll() {
+    public List<Rail> findAll() {
         Session session = sessionFactory.openSession();
-        Query<Event> query = session.createQuery("from Event", Event.class);
-        List<Event> items = query.getResultList();
+        Query<Rail> query = session.createQuery("from Rail", Rail.class);
+        List<Rail> items = query.getResultList();
         session.close();
         return items;
     }
 
     @Override
-    public void save(Event item) {
+    public void save(Rail item) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.saveOrUpdate(item);
+        session.save(item);
         transaction.commit();
         session.close();
     }
@@ -44,11 +44,11 @@ public class EventRepository implements BaseRepository<Event> {
     @Override
     public void deleteAll() {
         Session session = sessionFactory.openSession();
-        Query<Event> query = session.createQuery("from Event", Event.class);
-        List<Event> items = query.getResultList();
+        Query<Rail> query = session.createQuery("from Rail", Rail.class);
+        List<Rail> items = query.getResultList();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        for (Event item : items) {
+        for (Rail item : items) {
             session.delete(item);
         }
         transaction.commit();
@@ -58,18 +58,26 @@ public class EventRepository implements BaseRepository<Event> {
     @Override
     public long count() {
         Session session = sessionFactory.openSession();
-        Query<Event> query = session.createQuery("from Event", Event.class);
+        Query<Rail> query = session.createQuery("from Rail", Rail.class);
         long size = query.getResultList().size();
         session.close();
         return size;
     }
 
     @Override
-    public Optional<Event> findById(long id) {
+    public Optional<Rail> findById(long id) {
         Session session = sessionFactory.openSession();
-        Event item = session.get(Event.class, id);
+        Rail item = session.get(Rail.class, id);
         session.close();
         return Optional.of(item);
     }
 
+    @Override
+    public Optional<Rail> getRandomItem() {
+        Session session = sessionFactory.openSession();
+        Query<Rail> query = session.createQuery("from Rail order by rand()", Rail.class).setMaxResults(1);
+        Rail item = query.getSingleResult();
+        session.close();
+        return Optional.of(item);
+    }
 }

@@ -1,7 +1,8 @@
 package app.repositoryHibernate.impl;
 
-import app.model.SchedulePart;
-import app.repositoryHibernate.BaseRepository;
+import app.model.Train;
+import app.repositoryHibernate.RandomItemRepository;
+import app.repositoryHibernate.TrainRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,30 +14,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class SchedulePartRepository implements BaseRepository<SchedulePart> {
+public class TrainRepositoryImpl implements TrainRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public SchedulePartRepository(SessionFactory sessionFactory) {
+    public TrainRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<SchedulePart> findAll() {
+    public List<Train> findAll() {
         Session session = sessionFactory.openSession();
-        Query<SchedulePart> query = session.createQuery("from SchedulePart", SchedulePart.class);
-        List<SchedulePart> items = query.getResultList();
+        Query<Train> query = session.createQuery("from Train", Train.class);
+        List<Train> items = query.getResultList();
         session.close();
         return items;
     }
 
     @Override
-    public void save(SchedulePart item) {
+    public void save(Train item) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.saveOrUpdate(item);
+        session.save(item);
         transaction.commit();
         session.close();
     }
@@ -44,11 +45,11 @@ public class SchedulePartRepository implements BaseRepository<SchedulePart> {
     @Override
     public void deleteAll() {
         Session session = sessionFactory.openSession();
-        Query<SchedulePart> query = session.createQuery("from SchedulePart", SchedulePart.class);
-        List<SchedulePart> items = query.getResultList();
+        Query<Train> query = session.createQuery("from Train", Train.class);
+        List<Train> items = query.getResultList();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        for (SchedulePart item : items) {
+        for (Train item : items) {
             session.delete(item);
         }
         transaction.commit();
@@ -58,16 +59,25 @@ public class SchedulePartRepository implements BaseRepository<SchedulePart> {
     @Override
     public long count() {
         Session session = sessionFactory.openSession();
-        Query<SchedulePart> query = session.createQuery("from SchedulePart", SchedulePart.class);
+        Query<Train> query = session.createQuery("from Train", Train.class);
         long size = query.getResultList().size();
         session.close();
         return size;
     }
 
     @Override
-    public Optional<SchedulePart> findById(long id) {
+    public Optional<Train> findById(long id) {
         Session session = sessionFactory.openSession();
-        SchedulePart item = session.get(SchedulePart.class, id);
+        Train item = session.get(Train.class, id);
+        session.close();
+        return Optional.of(item);
+    }
+
+    @Override
+    public Optional<Train> getRandomItem() {
+        Session session = sessionFactory.openSession();
+        Query<Train> query = session.createQuery("from Train order by rand()", Train.class).setMaxResults(1);
+        Train item = query.getSingleResult();
         session.close();
         return Optional.of(item);
     }

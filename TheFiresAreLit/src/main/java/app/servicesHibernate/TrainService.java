@@ -3,7 +3,7 @@ package app.servicesHibernate;
 import app.dto.TrainDto;
 import app.mapper.Mapper;
 import app.model.Train;
-import app.repositoryHibernate.impl.TrainRepository;
+import app.repositoryHibernate.TrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

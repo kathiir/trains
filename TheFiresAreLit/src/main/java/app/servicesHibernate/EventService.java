@@ -3,9 +3,9 @@ package app.servicesHibernate;
 import app.dto.EventDto;
 import app.dto.TrainDto;
 import app.mapper.Mapper;
-import app.repositoryHibernate.impl.EventRepository;
-import app.repositoryHibernate.impl.RailRepository;
-import app.repositoryHibernate.impl.TrainRepository;
+import app.repositoryHibernate.EventRepository;
+import app.repositoryHibernate.RailRepository;
+import app.repositoryHibernate.TrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

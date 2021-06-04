@@ -1,7 +1,8 @@
 package app.repositoryHibernate.impl;
 
-import app.model.Railway;
+import app.model.Event;
 import app.repositoryHibernate.BaseRepository;
+import app.repositoryHibernate.EventRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,30 +14,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RailwayRepository implements BaseRepository<Railway> {
+public class EventRepositoryImpl implements EventRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public RailwayRepository(SessionFactory sessionFactory) {
+    public EventRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Railway> findAll() {
+    public List<Event> findAll() {
         Session session = sessionFactory.openSession();
-        Query<Railway> query = session.createQuery("from Railway", Railway.class);
-        List<Railway> items = query.getResultList();
+        Query<Event> query = session.createQuery("from Event", Event.class);
+        List<Event> items = query.getResultList();
         session.close();
         return items;
     }
 
     @Override
-    public void save(Railway item) {
+    public void save(Event item) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.saveOrUpdate(item);
+        session.save(item);
         transaction.commit();
         session.close();
     }
@@ -44,11 +45,11 @@ public class RailwayRepository implements BaseRepository<Railway> {
     @Override
     public void deleteAll() {
         Session session = sessionFactory.openSession();
-        Query<Railway> query = session.createQuery("from Railway", Railway.class);
-        List<Railway> items = query.getResultList();
+        Query<Event> query = session.createQuery("from Event", Event.class);
+        List<Event> items = query.getResultList();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        for (Railway item : items) {
+        for (Event item : items) {
             session.delete(item);
         }
         transaction.commit();
@@ -58,17 +59,18 @@ public class RailwayRepository implements BaseRepository<Railway> {
     @Override
     public long count() {
         Session session = sessionFactory.openSession();
-        Query<Railway> query = session.createQuery("from Railway", Railway.class);
+        Query<Event> query = session.createQuery("from Event", Event.class);
         long size = query.getResultList().size();
         session.close();
         return size;
     }
 
     @Override
-    public Optional<Railway> findById(long id) {
+    public Optional<Event> findById(long id) {
         Session session = sessionFactory.openSession();
-        Railway item = session.get(Railway.class, id);
+        Event item = session.get(Event.class, id);
         session.close();
         return Optional.of(item);
     }
+
 }

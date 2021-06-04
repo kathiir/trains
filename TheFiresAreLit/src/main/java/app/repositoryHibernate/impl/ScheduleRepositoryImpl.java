@@ -2,6 +2,7 @@ package app.repositoryHibernate.impl;
 
 import app.model.Schedule;
 import app.repositoryHibernate.BaseRepository;
+import app.repositoryHibernate.ScheduleRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,12 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ScheduleRepository implements BaseRepository<Schedule> {
+public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public ScheduleRepository(SessionFactory sessionFactory) {
+    public ScheduleRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -36,7 +37,7 @@ public class ScheduleRepository implements BaseRepository<Schedule> {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.saveOrUpdate(item);
+        session.save(item);
         transaction.commit();
         session.close();
     }

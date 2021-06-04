@@ -1,4 +1,4 @@
-package app.model;
+package app.modelHiber;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

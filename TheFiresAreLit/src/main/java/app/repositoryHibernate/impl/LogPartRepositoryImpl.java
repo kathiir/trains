@@ -2,6 +2,7 @@ package app.repositoryHibernate.impl;
 
 import app.model.LogPart;
 import app.repositoryHibernate.BaseRepository;
+import app.repositoryHibernate.LogPartRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,12 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class LogPartRepository implements BaseRepository<LogPart> {
+public class LogPartRepositoryImpl implements LogPartRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public LogPartRepository(SessionFactory sessionFactory) {
+    public LogPartRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -36,7 +37,7 @@ public class LogPartRepository implements BaseRepository<LogPart> {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.saveOrUpdate(item);
+        session.save(item);
         transaction.commit();
         session.close();
     }
