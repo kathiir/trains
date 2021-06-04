@@ -1,11 +1,5 @@
 package app.mapper;
 
-import app.dto.EventDto;
-import app.dto.RailDto;
-import app.dto.RailwayDto;
-import app.dto.RouteDto;
-import app.dto.RoutePartDto;
-import app.dto.TrainDto;
 import app.model.Event;
 import app.model.Log;
 import app.model.LogPart;
@@ -14,6 +8,12 @@ import app.model.Railway;
 import app.model.Schedule;
 import app.model.SchedulePart;
 import app.model.Train;
+import app.dto.EventDto;
+import app.dto.RailDto;
+import app.dto.RailwayDto;
+import app.dto.RouteDto;
+import app.dto.RoutePartDto;
+import app.dto.TrainDto;
 
 import java.util.List;
 

@@ -2,6 +2,7 @@ package app.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ public class Rail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "next_id")
     private Rail next; //naming?

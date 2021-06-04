@@ -2,6 +2,7 @@ package app.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "log", cascade = CascadeType.ALL)
     private List<LogPart> log;
 }

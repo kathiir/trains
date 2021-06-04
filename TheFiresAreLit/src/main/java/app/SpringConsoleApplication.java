@@ -1,21 +1,24 @@
 package app;
 
-import app.config.HiberConfig;
-import app.dto.RouteDto;
 import app.mapper.Mapper;
-//import app.repository.EventRepository;
-import app.repositoryHibernate.EventRepository;
-import app.servicesHibernate.RailwayService;
-//import app.services.EventService;
-import app.servicesHibernate.RouteService;
+import app.dto.RouteDto;
+
+//import app.hiber.config.Config;
+//import app.hiber.repository.EventRepository;
+//import app.hiber.services.EventService;
+//import app.hiber.services.RouteService;
+import app.data.config.Config;
+import app.data.repository.EventRepository;
+import app.data.services.EventService;
+import app.data.services.RouteService;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackageClasses = {HiberConfig.class, RailwayService.class, RouteDto.class, EventRepository.class, Mapper.class})
-//@ComponentScan(basePackageClasses = {SpringDataConfig.class, EventService.class, RouteDto.class, EventRepository.class, Mapper.class})
+@ComponentScan(basePackageClasses = {Config.class, EventService.class, RouteDto.class, EventRepository.class, Mapper.class})
 public class SpringConsoleApplication {
 
 
