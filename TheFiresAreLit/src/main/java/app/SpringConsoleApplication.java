@@ -1,18 +1,22 @@
 package app;
 
+import app.config.HiberConfig;
 import app.config.SpringDataConfig;
 import app.dto.RouteDto;
 import app.mapper.Mapper;
-import app.repository.EventRepository;
-import app.services.EventService;
-import app.services.RouteService;
+//import app.repository.EventRepository;
+import app.repositoryHibernate.impl.EventRepository;
+import app.servicesHibernate.RailwayService;
+//import app.services.EventService;
+import app.servicesHibernate.RouteService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackageClasses = {SpringDataConfig.class, EventService.class, RouteDto.class, EventRepository.class, Mapper.class})
+@ComponentScan(basePackageClasses = {HiberConfig.class, RailwayService.class, RouteDto.class, EventRepository.class, Mapper.class})
+//@ComponentScan(basePackageClasses = {SpringDataConfig.class, EventService.class, RouteDto.class, EventRepository.class, Mapper.class})
 public class SpringConsoleApplication {
 
 
@@ -27,7 +31,9 @@ public class SpringConsoleApplication {
 //        EventRepository eventRepository = applicationContext.getBean(EventRepository.class);
 
         RouteService routeService = applicationContext.getBean(RouteService.class);
-        routeService.generateRandomRoute();
+//        routeService.generateRandomRoute();
+        routeService.run();
+        System.out.println(routeService.getTrainLog());
 //        routeService.wait().
     }
 

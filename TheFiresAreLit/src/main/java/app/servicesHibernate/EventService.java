@@ -1,11 +1,11 @@
-package app.services;
+package app.servicesHibernate;
 
 import app.dto.EventDto;
 import app.dto.TrainDto;
 import app.mapper.Mapper;
-import app.repository.EventRepository;
-import app.repository.RailRepository;
-import app.repository.TrainRepository;
+import app.repositoryHibernate.impl.EventRepository;
+import app.repositoryHibernate.impl.RailRepository;
+import app.repositoryHibernate.impl.TrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,6 @@ public class EventService {
     private final RailService railService;
     private final EventRepository eventRepository;
     private final TrainRepository trainRepository;
-    private final RailRepository railRepository;
     private final Mapper mapper;
 
     @Autowired
@@ -31,7 +30,6 @@ public class EventService {
         this.railService = railService;
         this.eventRepository = eventRepository;
         this.trainRepository = trainRepository;
-        this.railRepository = railRepository;
         this.mapper = mapper;
     }
 

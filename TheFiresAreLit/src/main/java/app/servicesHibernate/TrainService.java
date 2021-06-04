@@ -1,13 +1,13 @@
-package app.services;
+package app.servicesHibernate;
 
 import app.dto.TrainDto;
 import app.mapper.Mapper;
 import app.model.Train;
-import app.repository.TrainRepository;
+import app.repositoryHibernate.impl.TrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class TrainService {
@@ -24,17 +24,13 @@ public class TrainService {
     }
 
     public TrainDto randomTrain() {
-        long qty = trainRepository.count();
-        int idx = (int)(Math.random() * qty);
-        Page<Train> trainPage = trainRepository.findAll(PageRequest.of(idx, 1));
+        Optional<Train> item = trainRepository.getRandomItem();
 
-        Train train = trainPage.iterator().next();
-        if (train == null) {
-
+        if (item.isEmpty()) {
             return null;
         }
 
-        return mapper.toSimpleTrainDto(train);
+        return mapper.toSimpleTrainDto(item.orElse(null));
     }
 
 

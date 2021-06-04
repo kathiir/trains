@@ -1,12 +1,12 @@
-package app.services;
+package app.servicesHibernate;
 
 import app.dto.RailDto;
 import app.mapper.Mapper;
 import app.model.Rail;
-import app.repository.RailRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import app.repositoryHibernate.impl.RailRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class RailService {
@@ -20,16 +20,12 @@ public class RailService {
     }
 
     public RailDto randomRail() {
-        long qty = railRepository.count();
-        int idx = (int)(Math.random() * qty);
-        Page<Rail> trainPage = railRepository.findAll(PageRequest.of(idx, 1));
+        Optional<Rail> item = railRepository.getRandomItem();
 
-        Rail rail = trainPage.iterator().next();
-        if (rail == null) {
-
+        if (item.isEmpty()) {
             return null;
         }
 
-        return mapper.toSimpleRailDto(rail);
+        return mapper.toSimpleRailDto(item.orElse(null));
     }
 }

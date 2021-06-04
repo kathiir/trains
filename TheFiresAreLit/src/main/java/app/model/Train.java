@@ -1,7 +1,5 @@
 package app.model;
 
-import app.dto.RailDto;
-import app.dto.RouteDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

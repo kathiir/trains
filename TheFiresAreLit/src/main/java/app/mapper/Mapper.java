@@ -15,19 +15,65 @@ import app.model.Schedule;
 import app.model.SchedulePart;
 import app.model.Train;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public abstract class Mapper {
     public abstract RailDto toRailDto(Rail rail);
 
+    @DoIgnore
+    public RailDto toSimpleRailDto(Rail rail) {
+        RailDto railDto = new RailDto();
+        railDto.setId(rail.getId());
+        railDto.setStation(rail.isStation());
+        railDto.setName(rail.getName());
+
+        Rail next = rail.getNext();
+        if (next!= null) {
+            RailDto nextDto = new RailDto();
+
+            nextDto.setId(next.getId());
+            nextDto.setStation(next.isStation());
+            nextDto.setName(next.getName());
+
+            railDto.setNext(nextDto);
+        }
+
+
+        return railDto;
+    };
+
     public abstract Rail toRail(RailDto railDto);
 
-    public abstract EventDto toEventDto(Event event);
+    public EventDto toEventDto(Event event) {
+        EventDto eventDto = new EventDto();
+        eventDto.setId(event.getId());
+        eventDto.setBeginning(event.getBeginning());
+        eventDto.setEnding(event.getEnding());
+        if (event.getTrain() != null) {
+            eventDto.setTrain(toSimpleTrainDto(event.getTrain()));
+        } else {
+            eventDto.setRail(toSimpleRailDto(event.getRail()));
+        }
 
-    public abstract Event toEvent(EventDto eventDto);
+        return eventDto;
+    }
+
+    public abstract List<EventDto> toEventDtos(List<Event> events);
+
+    public Event toEvent(EventDto eventDto) {
+        Event event = new Event();
+        event.setId(eventDto.getId());
+        event.setBeginning(eventDto.getBeginning());
+        event.setEnding(eventDto.getEnding());
+        if (eventDto.getTrain() != null) {
+            event.setTrain(toSimpleTrain(eventDto.getTrain()));
+        } else {
+            event.setRail(toRail(eventDto.getRail()));
+        }
+
+        return event;
+    }
 
     public RailwayDto toRailwayDto(Railway railway) {
 
@@ -79,8 +125,26 @@ public abstract class Mapper {
         routeDto.setLog_id(log.getId());
         routeDto.setSchedule_id(schedule.getId());
 
-        routeDto.setSchedule(scheduleToRoutePartDto(schedule.getSchedule()));
-        routeDto.setLog(logToRoutePartDto(log.getLog()));
+        var scheduleDto = scheduleToRoutePartDto(schedule.getSchedule());
+        scheduleDto.sort((o1, o2) -> {
+            if (o1.getArrival() == null) {
+                return 1;
+            } else if (o2.getArrival() == null) {
+                return -1;
+            }
+            return o1.getArrival().compareTo(o2.getArrival());
+        });
+        routeDto.setSchedule(scheduleDto);
+        var logDto = logToRoutePartDto(log.getLog());
+        logDto.sort((o1, o2) -> {
+            if (o1.getArrival() == null) {
+                return 1;
+            } else if (o2.getArrival() == null) {
+                return -1;
+            }
+            return o1.getArrival().compareTo(o2.getArrival());
+        });
+        routeDto.setLog(logDto);
 
         return routeDto;
     }
@@ -90,6 +154,11 @@ public abstract class Mapper {
         log.setId(routeDto.getLog_id());
         log.setLog(toLogPart(routeDto.getLog()));
 
+        for (LogPart part :
+                log.getLog()) {
+            part.setLog(log);
+        }
+
         return log;
     }
 
@@ -97,6 +166,11 @@ public abstract class Mapper {
         Schedule schedule = new Schedule();
         schedule.setId(routeDto.getSchedule_id());
         schedule.setSchedule(toSchedulePart(routeDto.getSchedule()));
+
+        for (SchedulePart part :
+                schedule.getSchedule()) {
+            part.setSchedule(schedule);
+        }
 
         return schedule;
     }
@@ -115,7 +189,7 @@ public abstract class Mapper {
         routePartDto.setId(logPart.getId());
         routePartDto.setArrival(logPart.getArrival());
         routePartDto.setDepartment(logPart.getDepartment());
-        routePartDto.setStation(toRailDto(logPart.getStation()));
+        routePartDto.setStation(toSimpleRailDto(logPart.getStation()));
 
         return routePartDto;
     }
@@ -126,7 +200,7 @@ public abstract class Mapper {
         routePartDto.setId(schedulePart.getId());
         routePartDto.setArrival(schedulePart.getArrival());
         routePartDto.setDepartment(schedulePart.getDepartment());
-        routePartDto.setStation(toRailDto(schedulePart.getStation()));
+        routePartDto.setStation(toSimpleRailDto(schedulePart.getStation()));
 
         return routePartDto;
     }
@@ -160,10 +234,26 @@ public abstract class Mapper {
 
         Rail rail = train.getRail();
         if (rail != null) {
-            trainDto.setRail(toRailDto(rail));
+            trainDto.setRail(toSimpleRailDto(rail));
         }
 
         trainDto.setRoute(toRouteDto(train.getLog(), train.getSchedule()));
+
+        return trainDto;
+    }
+
+    @DoIgnore
+    public TrainDto toSimpleTrainDto(Train train) {
+        TrainDto trainDto = new TrainDto();
+        trainDto.setId(train.getId());
+        trainDto.setName(train.getName());
+
+//        Rail rail = train.getRail();
+//        if (rail != null) {
+//            trainDto.setRail(toSimpleRailDto(rail));
+//        }
+//
+//        trainDto.setRoute(toRouteDto(train.getLog(), train.getSchedule()));
 
         return trainDto;
     }
@@ -177,6 +267,25 @@ public abstract class Mapper {
             train.setLog(toLog(route));
             train.setSchedule(toSchedule(route));
         }
+
+        train.setRail(toRail(trainDto.getRail()));
+
+
+        return train;
+    }
+
+    @DoIgnore
+    public Train toSimpleTrain(TrainDto trainDto) {
+        Train train = new Train();
+        train.setId(trainDto.getId());
+        train.setName(trainDto.getName());
+//        RouteDto route = trainDto.getRoute();
+//        if (route != null) {
+//            train.setLog(toLog(route));
+//            train.setSchedule(toSchedule(route));
+//        }
+//
+//        train.setRail(toRail(trainDto.getRail()));
 
 
         return train;

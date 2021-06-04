@@ -1,11 +1,11 @@
-package app.services;
+package app.servicesHibernate;
 
 import app.dto.RailDto;
 import app.dto.RailwayDto;
 import app.mapper.Mapper;
 import app.model.Rail;
-import app.repository.RailRepository;
-import app.repository.RailwayRepository;
+import app.repositoryHibernate.impl.RailRepository;
+import app.repositoryHibernate.impl.RailwayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
